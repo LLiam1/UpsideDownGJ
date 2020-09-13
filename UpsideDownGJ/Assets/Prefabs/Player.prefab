@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &512165341
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 512165342}
+  m_Layer: 0
+  m_Name: GroundTopCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &512165342
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512165341}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.57, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6062083969805004734}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6062083969805004707
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,6 +43,7 @@ GameObject:
   - component: {fileID: 6062083969805004704}
   - component: {fileID: 6062083969805004735}
   - component: {fileID: 6062083969805004732}
+  - component: {fileID: 2101960392}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -32,6 +63,7 @@ Transform:
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 6062083970874950120}
+  - {fileID: 512165342}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -147,7 +179,22 @@ MonoBehaviour:
     moveSpeed: 380
     jumpForce: 7.5
     isGrounded: 1
-  groundCheck: {fileID: 6062083970874950120}
+  groundBottomCheck: {fileID: 6062083970874950120}
+  groundTopCheck: {fileID: 512165342}
+  switched: 0
+--- !u!114 &2101960392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6062083969805004707}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0db3365fb7f6443a4afe4ab1b0c8bec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grounchCheck: {fileID: 0}
 --- !u!1 &6062083970874950123
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6062083970874950120}
   m_Layer: 0
-  m_Name: GroundCheck
+  m_Name: GroundBottomCheck
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
