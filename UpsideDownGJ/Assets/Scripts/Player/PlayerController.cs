@@ -9,30 +9,54 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
    
     public PlayerConfiguration config;
-    public Transform groundCheck;
+    public Transform groundBottomCheck;
+    public Transform groundTopCheck;
+    public bool switched;
+
+    private float horizontalInput;
+    private bool jumped;
+    private bool switchedGravity;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        switched = false;
     }
 
     void Update()
     {
-        if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
-        {
-            config.isGrounded = true;
-        }
-        else
-        {
-            config.isGrounded = false;
-        }
+        horizontalInput = Input.GetAxis("Horizontal");
+        jumped = Input.GetKeyDown(KeyCode.Space);
+        switchedGravity = Input.GetKeyDown(KeyCode.Q);
+    }
 
-        float horz = Input.GetAxis("Horizontal") * config.moveSpeed * Time.deltaTime;
+    void FixedUpdate()
+    {
+        config.isGrounded = IsGrounded(transform.position, groundBottomCheck.position) || IsGrounded(transform.position, groundTopCheck.position);
+
+        var horz = horizontalInput * config.moveSpeed * Time.fixedDeltaTime;
         rb.velocity = new Vector2(horz, rb.velocity.y);
 
-        if (Input.GetKey(KeyCode.Space) && config.isGrounded == true)
+        if (jumped && config.isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, config.jumpForce);
+            var dir = -1;
+            if (!switched)
+            {
+                dir = 1;
+            }
+
+            rb.velocity = new Vector2(rb.velocity.x, config.jumpForce * dir);
         }
+
+        if (switchedGravity && config.isGrounded)
+        {
+            switched = !switched;
+            rb.gravityScale = rb.gravityScale * -1;
+        }
+    }
+
+    private bool IsGrounded(Vector3 player, Vector3 groundCheck)
+    {
+        return Physics2D.Linecast(player, groundCheck, 1 << LayerMask.NameToLayer("Ground"));
     }
 }
