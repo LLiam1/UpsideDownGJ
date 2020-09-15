@@ -28,4 +28,9 @@ public class GameController : MonoBehaviour
             rb.gravityScale *= -1;
         }
     }
+
+    public int GetGravityDirection()
+    {
+        return switched ? -1 : 1;
+    }
 }

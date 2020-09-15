@@ -7,4 +7,9 @@ public static class Util
     {
         return Mathf.Abs(Vector2.Distance(a, b));
     }
+
+    public static Vector2 GetDirectionVector2D(float angle)
+    {
+        return new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+    }
 }
