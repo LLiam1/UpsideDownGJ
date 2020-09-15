@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms;
 
 public class PlayerController : MonoBehaviour
@@ -11,23 +12,27 @@ public class PlayerController : MonoBehaviour
     public PlayerConfiguration config;
     public Transform groundBottomCheck;
     public Transform groundTopCheck;
-    public bool switched;
+
+    private GameController gameController;
 
     private float horizontalInput;
     private bool jumped;
-    private bool switchedGravity;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        switched = false;
+        gameController = GameObject.FindObjectOfType<GameController>();
     }
 
     void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");
         jumped = Input.GetKeyDown(KeyCode.Space);
-        switchedGravity = Input.GetKeyDown(KeyCode.Q);
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            gameController.SwitchGravity();
+        }
     }
 
     void FixedUpdate()
@@ -40,18 +45,20 @@ public class PlayerController : MonoBehaviour
         if (jumped && config.isGrounded)
         {
             var dir = -1;
-            if (!switched)
+            if (!gameController.switched)
             {
                 dir = 1;
             }
 
             rb.velocity = new Vector2(rb.velocity.x, config.jumpForce * dir);
         }
+    }
 
-        if (switchedGravity && config.isGrounded)
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Hazard"))
         {
-            switched = !switched;
-            rb.gravityScale = rb.gravityScale * -1;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
