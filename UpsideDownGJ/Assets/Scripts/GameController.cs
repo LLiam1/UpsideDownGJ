@@ -20,6 +20,11 @@ public class GameController : MonoBehaviour
         switched = !switched;
         foreach(var rb in rigidBodies)
         {
+            if (!rb.simulated)
+            {
+                continue;
+            }
+
             rb.gravityScale *= -1;
         }
     }
