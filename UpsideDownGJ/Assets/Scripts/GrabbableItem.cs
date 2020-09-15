@@ -19,6 +19,7 @@ public class GrabbableItem : MonoBehaviour
     private Collider2D collider2D;
 
     private Transform holder;
+    private bool isEquipped;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class GrabbableItem : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         isClosest = false;
+        isEquipped = false;
 
         rb = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<Collider2D>();
@@ -35,10 +37,16 @@ public class GrabbableItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if holder is not null then this implicitly shows that this is the currently equipped (held) item
-        if (holder != null)
+        if (isEquipped)
         {
             transform.position = holder.position;
+            return;
+        }
+
+        // for some reason isEquipped is getting set to false somewhere and is throwing off these calculations so need to
+        // return here if the rigidbody isn't being simulated.
+        if (!rb.simulated)
+        {
             return;
         }
 
@@ -69,6 +77,7 @@ public class GrabbableItem : MonoBehaviour
     public void ResetItem()
     {
         holder = null;
+        isEquipped = false;
         spriteRenderer.color = originalColor;
         isClosest = false;
     }
@@ -87,6 +96,12 @@ public class GrabbableItem : MonoBehaviour
 
     public void Equip(Transform holder)
     {
+        isEquipped = true;
         this.holder = holder;
+    }
+
+    public void SetGravityScale(float gravityScale)
+    {
+        rb.gravityScale = gravityScale;
     }
 }

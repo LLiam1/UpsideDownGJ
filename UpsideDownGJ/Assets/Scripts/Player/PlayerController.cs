@@ -1,58 +1,74 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
    
     public PlayerConfiguration config;
-    public Transform groundBottomCheck;
-    public Transform groundTopCheck;
     public Transform itemHolder;
+    public GameObject characterHolder;
 
     private GameController gameController;
     private SpriteRenderer spriteRenderer;
 
-    private float horizontalInput;
     private bool jumped;
+    private float jumpTimer;
 
-    private GrabbableItem closest;
-    private GrabbableItem equipped;
+    public GrabbableItem closest;
+    public GrabbableItem equipped;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = characterHolder.GetComponent<SpriteRenderer>();
         gameController = FindObjectOfType<GameController>();
     }
 
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
+        var raycastDir = Vector2.down;
+        if (gameController.switched)
+        {
+            raycastDir = Vector2.up;
+        }
+
+        var wasOnGround = config.isGrounded;
+        config.isGrounded = Physics2D.Raycast(transform.position + config.colliderOffset, raycastDir, config.groundLength, config.groundLayer)
+            || Physics2D.Raycast(transform.position - config.colliderOffset, raycastDir, config.groundLength, config.groundLayer)
+            || Physics2D.Raycast(transform.position + config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleLeft) * raycastDir, config.groundLength, config.groundLayer)
+            || Physics2D.Raycast(transform.position - config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleRight) * raycastDir, config.groundLength, config.groundLayer);
+
+        if (!wasOnGround && config.isGrounded)
+        {
+            StartCoroutine(JumpSqueeze(1.25f, 0.8f, 0.05f));
+        }
+
         jumped = Input.GetKeyDown(KeyCode.Space);
+        if (jumped)
+        {
+            jumpTimer = Time.time + config.jumpDelay;
+        }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            rb.gravityScale = gameController.GetGravityDirection();
             gameController.SwitchGravity();
-
             spriteRenderer.flipY = gameController.switched;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             EquipItem(closest);
-        } 
+        }
+
+        config.direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
 
     void FixedUpdate()
     {
-        config.isGrounded = IsGrounded(transform.position, groundBottomCheck.position) || IsGrounded(transform.position, groundTopCheck.position);
-
-        var horz = horizontalInput * config.moveSpeed * Time.fixedDeltaTime;
+        var horz = config.direction.x * config.moveSpeed * Time.fixedDeltaTime;
         rb.velocity = new Vector2(horz, rb.velocity.y);
 
         if (horz != 0)
@@ -60,16 +76,14 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = horz < 0;
         }
 
-        if (jumped && config.isGrounded)
+        if (jumped && config.isGrounded && jumpTimer > Time.time)
         {
-            var dir = 1;
-            if (gameController.switched)
-            {
-                dir = -1;
-            } 
-
-            rb.velocity = new Vector2(rb.velocity.x, config.jumpForce * dir);
+            rb.velocity = new Vector2(rb.velocity.x, config.jumpForce * gameController.GetGravityDirection());
+            jumpTimer = 0;
+            StartCoroutine(JumpSqueeze(0.5f, 1.2f, 0.1f));
         }
+
+        ModifyPhysics();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -80,9 +94,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool IsGrounded(Vector3 player, Vector3 groundCheck)
+    private void ModifyPhysics()
     {
-        return Physics2D.Linecast(player, groundCheck, 1 << LayerMask.NameToLayer("Ground"));
+        bool changingDirections = (config.direction.x > 0 && rb.velocity.x < 0) || (config.direction.x < 0 && rb.velocity.x > 0);
+
+        if (config.isGrounded)
+        {
+            if (Mathf.Abs(config.direction.x) < 0.4f || changingDirections)
+            {
+                rb.drag = config.linearDrag;
+            }
+            else
+            {
+                rb.drag = 0f;
+            }
+            rb.gravityScale = 0;
+        }
+        else
+        {
+            var gravityDirection = gameController.GetGravityDirection();
+            rb.gravityScale = config.gravity * gravityDirection;
+            rb.drag = config.linearDrag * 0.15f;
+
+            var yVelocity = gravityDirection < 0 ? rb.velocity.y * -1 : rb.velocity.y;
+            if (yVelocity < 0)
+            {
+                rb.gravityScale = config.gravity * gravityDirection * config.fallMultiplier;
+            }
+            else if (yVelocity > 0 && !Input.GetButton("Jump"))
+            {
+                rb.gravityScale = config.gravity * gravityDirection * (config.fallMultiplier / 2);
+            }
+        }
     }
 
     private void EquipItem(GrabbableItem item)
@@ -91,6 +134,7 @@ public class PlayerController : MonoBehaviour
         {
             equipped.ResetItem();
             equipped.Enable();
+            equipped.SetGravityScale(gameController.GetGravityDirection());
         }
 
         closest = null;
@@ -134,5 +178,46 @@ public class PlayerController : MonoBehaviour
     public bool FlippedY()
     {
         return spriteRenderer.flipY;
+    }
+
+    IEnumerator JumpSqueeze(float xSqueeze, float ySqueeze, float seconds)
+    {
+        Vector3 originalSize = Vector3.one;
+        Vector3 newSize = new Vector3(xSqueeze, ySqueeze, originalSize.z);
+        float t = 0f;
+        while (t <= 1.0)
+        {
+            t += Time.deltaTime / seconds;
+            characterHolder.transform.localScale = Vector3.Lerp(originalSize, newSize, t);
+            yield return null;
+        }
+        t = 0f;
+        while (t <= 1.0)
+        {
+            t += Time.deltaTime / seconds;
+            characterHolder.transform.localScale = Vector3.Lerp(newSize, originalSize, t);
+            yield return null;
+        }
+
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        var raycastDir = Vector3.down;
+        if (gameController != null && gameController.switched)
+        {
+            raycastDir = Vector3.up;
+        }
+
+        var angleLeft = Util.GetDirectionVector2D(config.coyoteTimeAngleLeft);
+        var angleRight = Util.GetDirectionVector2D(config.coyoteTimeAngleRight);
+
+        Gizmos.DrawLine(transform.position + config.colliderOffset, transform.position + config.colliderOffset + raycastDir * config.groundLength);
+        Gizmos.DrawLine(transform.position - config.colliderOffset, transform.position - config.colliderOffset + raycastDir * config.groundLength);
+        Gizmos.DrawLine(transform.position - config.colliderOffset, transform.position - config.colliderOffset + new Vector3(angleLeft.x, angleLeft.y * raycastDir.y) * config.groundLength);
+        Gizmos.DrawLine(transform.position + config.colliderOffset, transform.position + config.colliderOffset + new Vector3(angleRight.x, angleRight.y * raycastDir.y) * config.groundLength);
+
     }
 }
