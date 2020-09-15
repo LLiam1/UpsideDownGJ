@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlatformController : MonoBehaviour
 {
     public PlatformConfiguration config;
+
     private void Start()
     {
         //Set Center Position
