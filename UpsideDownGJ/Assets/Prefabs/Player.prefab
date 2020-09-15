@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 6062083969805004705}
   - component: {fileID: 6062083969805004704}
   - component: {fileID: 6062083969805004735}
-  - component: {fileID: 6062083969805004732}
   - component: {fileID: 2101960392}
   m_Layer: 0
   m_Name: Player
@@ -136,7 +135,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &6062083969805004735
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -163,7 +162,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6062083969805004732
+--- !u!114 &2101960392
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,25 +175,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config:
-    moveSpeed: 380
-    jumpForce: 7.5
+    moveSpeed: 400
+    jumpForce: 5
     isGrounded: 1
   groundBottomCheck: {fileID: 6062083970874950120}
   groundTopCheck: {fileID: 512165342}
-  switched: 0
---- !u!114 &2101960392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6062083969805004707}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0db3365fb7f6443a4afe4ab1b0c8bec2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grounchCheck: {fileID: 0}
 --- !u!1 &6062083970874950123
 GameObject:
   m_ObjectHideFlags: 0
