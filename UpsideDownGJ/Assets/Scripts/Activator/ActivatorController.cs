@@ -6,6 +6,16 @@ public class ActivatorController : MonoBehaviour
 {
     public ActivatorConfiguration config;
 
+    private void Start()
+    {
+        config.doorController = config.door.GetComponent<DoorController>();
+    }
+
+    private void Update()
+    {
+        config.doorController.isOpened = config.isActivated;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         config.button.transform.position -= new Vector3(0, 0.15f, 0);
