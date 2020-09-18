@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/gravity_switch.unity
     guid: 8cda964b8690040eaba2176d1bd270ad
+  - enabled: 1
+    path: Assets/Scenes/the_ol_switcheroo.unity
+    guid: b4389afc0d17d416d902c6003831a144
+  - enabled: 1
+    path: Assets/Scenes/up_or_down.unity
+    guid: b0659c3cfa6f34455844415e98d711cf
   m_configObjects: {}

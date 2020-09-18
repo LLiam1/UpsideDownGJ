@@ -224,7 +224,7 @@ MonoBehaviour:
     linearDrag: 4
     fallMultiplier: 2.5
     jumpDelay: 1
-    groundLength: 1.2
+    groundLength: 1.06
     coyoteTimeAngleLeft: 100
     coyoteTimeAngleRight: 80
     groundLayer:
