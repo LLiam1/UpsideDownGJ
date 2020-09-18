@@ -25,6 +25,12 @@ public class GameController : MonoBehaviour
                 continue;
             }
 
+            var gravityObject = rb.gameObject.GetComponent<IGravityObject>();
+            if (gravityObject != null && !gravityObject.UsingGravity())
+            {
+                continue;
+            }
+
             rb.gravityScale *= -1;
         }
     }

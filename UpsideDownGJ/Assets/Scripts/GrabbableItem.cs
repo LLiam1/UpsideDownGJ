@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
-public class GrabbableItem : MonoBehaviour
+public class GrabbableItem : MonoBehaviour, IGravityObject
 {
     public float highlightRange;
     public float distanceToPlayer;
@@ -18,6 +18,9 @@ public class GrabbableItem : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D collider2D;
 
+    private bool useGravity = true;
+    private float lastGravityScale;
+
     private Transform holder;
     private bool isEquipped;
 
@@ -29,6 +32,7 @@ public class GrabbableItem : MonoBehaviour
         originalColor = spriteRenderer.color;
         isClosest = false;
         isEquipped = false;
+        useGravity = true;
 
         rb = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<Collider2D>();
@@ -103,5 +107,23 @@ public class GrabbableItem : MonoBehaviour
     public void SetGravityScale(float gravityScale)
     {
         rb.gravityScale = gravityScale;
+    }
+
+    public bool UsingGravity()
+    {
+        return useGravity;
+    }
+
+    public void DisableGravity()
+    {
+        useGravity = false;
+        lastGravityScale = rb.gravityScale;
+        SetGravityScale(0);
+    }
+
+    public void EnableGravity()
+    {
+        useGravity = true;
+        SetGravityScale(lastGravityScale);
     }
 }
