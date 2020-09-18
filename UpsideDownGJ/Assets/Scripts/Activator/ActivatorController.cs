@@ -25,7 +25,7 @@ public class ActivatorController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        config.button.transform.position -= new Vector3(0, 0.15f, 0);
+        config.button.transform.Translate(Vector2.up * -0.15f);
         config.isActivated = true;
         if (gate != null)
         {
@@ -40,7 +40,7 @@ public class ActivatorController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        config.button.transform.position += new Vector3(0, 0.15f, 0);
+        config.button.transform.Translate(Vector2.up * 0.15f);
         config.isActivated = false;
         if (gate != null)
         {
