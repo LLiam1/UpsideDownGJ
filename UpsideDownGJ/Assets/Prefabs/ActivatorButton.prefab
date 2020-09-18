@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4354108585887275797}
   - component: {fileID: 4354108585887275794}
   - component: {fileID: 4354108585887275795}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ActivatorButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,6 +48,7 @@ MonoBehaviour:
   config:
     isActivated: 0
     button: {fileID: 4354108587110757977}
+    door: {fileID: 0}
 --- !u!61 &4354108585887275795
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -85,7 +86,7 @@ GameObject:
   - component: {fileID: 4354108587110757976}
   - component: {fileID: 4354108587110757979}
   - component: {fileID: 4354108587110757978}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +193,7 @@ GameObject:
   - component: {fileID: 4354108587546736532}
   - component: {fileID: 4354108587546736533}
   - component: {fileID: 4354108587546736535}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ButtonBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
