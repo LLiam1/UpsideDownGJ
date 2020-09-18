@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     private bool jumped;
     private float jumpTimer;
+    private bool falling;
 
     public GrabbableItem closest;
     public GrabbableItem equipped;
@@ -24,10 +25,19 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = characterHolder.GetComponent<SpriteRenderer>();
         gameController = FindObjectOfType<GameController>();
+        falling = false;
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            falling = true;
+            rb.gravityScale = gameController.GetGravityDirection();
+            gameController.SwitchGravity();
+            spriteRenderer.flipY = gameController.switched;
+        }
+
         var raycastDir = Vector2.down;
         if (gameController.switched)
         {
@@ -49,13 +59,6 @@ public class PlayerController : MonoBehaviour
         if (jumped)
         {
             jumpTimer = Time.time + config.jumpDelay;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            rb.gravityScale = gameController.GetGravityDirection();
-            gameController.SwitchGravity();
-            spriteRenderer.flipY = gameController.switched;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -100,6 +103,7 @@ public class PlayerController : MonoBehaviour
 
         if (config.isGrounded)
         {
+            falling = false;
             if (Mathf.Abs(config.direction.x) < 0.4f || changingDirections)
             {
                 rb.drag = config.linearDrag;
@@ -117,7 +121,11 @@ public class PlayerController : MonoBehaviour
             rb.drag = config.linearDrag * 0.15f;
 
             var yVelocity = gravityDirection < 0 ? rb.velocity.y * -1 : rb.velocity.y;
-            if (yVelocity < 0)
+            if (falling && !config.isGrounded)
+            {
+                rb.gravityScale = config.gravity * gravityDirection;
+            }
+            else if (yVelocity < 0)
             {
                 rb.gravityScale = config.gravity * gravityDirection * config.fallMultiplier;
             }
