@@ -10,7 +10,10 @@ public class PlayerConfiguration
     public float linearDrag;
     public float fallMultiplier;
     public float jumpDelay = 0.25f;
+    public SqueezeConfiguration landSqueeze;
+    public SqueezeConfiguration jumpSqueeze;
     public float groundLength = 0.6f;
+    public float groundAngleLength = 1.4f;
     public float coyoteTimeAngleLeft = 100f;
     public float coyoteTimeAngleRight = 80f;
     public LayerMask groundLayer;

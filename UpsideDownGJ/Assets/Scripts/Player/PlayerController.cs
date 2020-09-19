@@ -47,12 +47,12 @@ public class PlayerController : MonoBehaviour
         var wasOnGround = config.isGrounded;
         config.isGrounded = Physics2D.Raycast(transform.position + config.colliderOffset, raycastDir, config.groundLength, config.groundLayer)
             || Physics2D.Raycast(transform.position - config.colliderOffset, raycastDir, config.groundLength, config.groundLayer)
-            || Physics2D.Raycast(transform.position + config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleLeft) * raycastDir, config.groundLength, config.groundLayer)
-            || Physics2D.Raycast(transform.position - config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleRight) * raycastDir, config.groundLength, config.groundLayer);
+            || Physics2D.Raycast(transform.position + config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleLeft) * raycastDir, config.groundAngleLength, config.groundLayer)
+            || Physics2D.Raycast(transform.position - config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleRight) * raycastDir, config.groundAngleLength, config.groundLayer);
 
         if (!wasOnGround && config.isGrounded)
         {
-            StartCoroutine(JumpSqueeze(1.25f, 0.8f, 0.05f));
+            StartCoroutine(JumpSqueeze(config.landSqueeze.xSqueeze, config.landSqueeze.ySqueeze, config.landSqueeze.seconds));
         }
 
         jumped = Input.GetKeyDown(KeyCode.Space);
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, config.jumpForce * gameController.GetGravityDirection());
             jumpTimer = 0;
-            StartCoroutine(JumpSqueeze(0.5f, 1.2f, 0.1f));
+            StartCoroutine(JumpSqueeze(config.jumpSqueeze.xSqueeze, config.jumpSqueeze.ySqueeze, config.jumpSqueeze.seconds));
         }
 
         ModifyPhysics();
@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator JumpSqueeze(float xSqueeze, float ySqueeze, float seconds)
     {
-        Vector3 originalSize = Vector3.one;
+        Vector3 originalSize = new Vector3(characterHolder.transform.localScale.x, characterHolder.transform.localScale.y, characterHolder.transform.localScale.z);
         Vector3 newSize = new Vector3(xSqueeze, ySqueeze, originalSize.z);
         float t = 0f;
         while (t <= 1.0)
@@ -224,8 +224,8 @@ public class PlayerController : MonoBehaviour
 
         Gizmos.DrawLine(transform.position + config.colliderOffset, transform.position + config.colliderOffset + raycastDir * config.groundLength);
         Gizmos.DrawLine(transform.position - config.colliderOffset, transform.position - config.colliderOffset + raycastDir * config.groundLength);
-        Gizmos.DrawLine(transform.position - config.colliderOffset, transform.position - config.colliderOffset + new Vector3(angleLeft.x, angleLeft.y * raycastDir.y) * config.groundLength);
-        Gizmos.DrawLine(transform.position + config.colliderOffset, transform.position + config.colliderOffset + new Vector3(angleRight.x, angleRight.y * raycastDir.y) * config.groundLength);
+        Gizmos.DrawLine(transform.position - config.colliderOffset, transform.position - config.colliderOffset + new Vector3(angleLeft.x, angleLeft.y * raycastDir.y) * config.groundAngleLength);
+        Gizmos.DrawLine(transform.position + config.colliderOffset, transform.position + config.colliderOffset + new Vector3(angleRight.x, angleRight.y * raycastDir.y) * config.groundAngleLength);
 
     }
 }
