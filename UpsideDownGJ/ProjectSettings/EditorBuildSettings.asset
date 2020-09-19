@@ -6,15 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/gravity_switch.unity
-    guid: 8cda964b8690040eaba2176d1bd270ad
+    path: Assets/Scenes/title_screen.unity
+    guid: 2e0ec994b9426483487d9dd097d7bfb6
   - enabled: 1
     path: Assets/Scenes/the_ol_switcheroo.unity
     guid: b4389afc0d17d416d902c6003831a144
   - enabled: 1
     path: Assets/Scenes/up_or_down.unity
     guid: b0659c3cfa6f34455844415e98d711cf
+  - enabled: 1
+    path: Assets/Scenes/anti_gravity_intro.unity
+    guid: c4691df9542c74535888883dfc3a33bb
+  - enabled: 1
+    path: Assets/Scenes/the_og_ag.unity
+    guid: 7331278d1f34f447baead3041ac7d406
+  - enabled: 1
+    path: Assets/Scenes/inverse_gravity_intro.unity
+    guid: 087bdf642f707468b9fe8e54d660a31d
+  - enabled: 1
+    path: Assets/Scenes/elevator.unity
+    guid: 90267671bc6f94e61a9aab4f5f500ce6
+  - enabled: 1
+    path: Assets/Scenes/dropping_dimes.unity
+    guid: 66b4e0a595d354de1b05d7609e663fe0
   m_configObjects: {}

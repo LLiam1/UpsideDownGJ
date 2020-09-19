@@ -106,7 +106,6 @@ public class GrabbableItem : MonoBehaviour, IGravityObject
 
     public void SetGravityScale(float gravityScale)
     {
-        Debug.Log($"Setting gravity scale to {gravityScale} for {gameObject.name}");
         rb.gravityScale = gravityScale;
     }
 
