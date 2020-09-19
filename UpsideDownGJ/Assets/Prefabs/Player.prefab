@@ -224,7 +224,16 @@ MonoBehaviour:
     linearDrag: 4
     fallMultiplier: 2.5
     jumpDelay: 1
+    landSqueeze:
+      xSqueeze: 1.1
+      ySqueeze: 0.8
+      seconds: 0.05
+    jumpSqueeze:
+      xSqueeze: 0.6
+      ySqueeze: 1.3
+      seconds: 0.05
     groundLength: 1.06
+    groundAngleLength: 1.25
     coyoteTimeAngleLeft: 120
     coyoteTimeAngleRight: 60
     groundLayer:

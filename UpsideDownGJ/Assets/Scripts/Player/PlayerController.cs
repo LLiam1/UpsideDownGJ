@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     private float jumpTimer;
     private bool falling;
 
+    private Vector3 originalScale;
+
     public GrabbableItem closest;
     public GrabbableItem equipped;
 
@@ -26,6 +28,8 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = characterHolder.GetComponent<SpriteRenderer>();
         gameController = FindObjectOfType<GameController>();
         falling = false;
+
+        originalScale = new Vector3(characterHolder.transform.localScale.x, characterHolder.transform.localScale.y, characterHolder.transform.localScale.z);
     }
 
     void Update()
@@ -190,20 +194,19 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator JumpSqueeze(float xSqueeze, float ySqueeze, float seconds)
     {
-        Vector3 originalSize = new Vector3(characterHolder.transform.localScale.x, characterHolder.transform.localScale.y, characterHolder.transform.localScale.z);
-        Vector3 newSize = new Vector3(xSqueeze, ySqueeze, originalSize.z);
+        Vector3 newSize = new Vector3(xSqueeze, ySqueeze, originalScale.z);
         float t = 0f;
         while (t <= 1.0)
         {
             t += Time.deltaTime / seconds;
-            characterHolder.transform.localScale = Vector3.Lerp(originalSize, newSize, t);
+            characterHolder.transform.localScale = Vector3.Lerp(originalScale, newSize, t);
             yield return null;
         }
         t = 0f;
         while (t <= 1.0)
         {
             t += Time.deltaTime / seconds;
-            characterHolder.transform.localScale = Vector3.Lerp(newSize, originalSize, t);
+            characterHolder.transform.localScale = Vector3.Lerp(newSize, originalScale, t);
             yield return null;
         }
 

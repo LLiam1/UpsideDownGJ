@@ -1243,58 +1243,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7228133125195700882}
     m_Modifications:
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.groundAngleLength
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.landSqueeze.x
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.landSqueeze.y
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.landSqueeze.z
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.jumpSqueeze.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.jumpSqueeze.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.jumpSqueeze.z
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.landSqueeze.xSqueeze
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.landSqueeze.ySqueeze
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.landSqueeze.seconds
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.jumpSqueeze.seconds
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.jumpSqueeze.ySqueeze
-      value: 1.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101960392, guid: 65013d39f52c64e6da80bf7c58efa476, type: 3}
-      propertyPath: config.jumpSqueeze.xSqueeze
-      value: 0.6
-      objectReference: {fileID: 0}
     - target: {fileID: 6062083969805004707, guid: 65013d39f52c64e6da80bf7c58efa476,
         type: 3}
       propertyPath: m_Name
@@ -1663,7 +1611,7 @@ PrefabInstance:
     - target: {fileID: 5653704498909368103, guid: a3d828db74def4cc2b457cb5e0d0ea20,
         type: 3}
       propertyPath: nextLevelName
-      value: up_or_down
+      value: the_og_ag
       objectReference: {fileID: 0}
     - target: {fileID: 5653704498909368104, guid: a3d828db74def4cc2b457cb5e0d0ea20,
         type: 3}
