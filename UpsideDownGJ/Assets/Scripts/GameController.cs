@@ -13,7 +13,6 @@ public class GameController : MonoBehaviour
     private Rigidbody2D[] rigidBodies;
     private SceneFader fader;
 
-    // Start is called before the first frame update
     void Start()
     {
         rigidBodies = FindObjectsOfType<Rigidbody2D>();
