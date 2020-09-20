@@ -20,4 +20,6 @@ public class PlayerConfiguration
     public Vector2 direction;
     public Vector3 colliderOffset;
     public bool isGrounded = true;
+    public bool isJumpEnabled = true;
+    public bool isGamePaused = false;
 }

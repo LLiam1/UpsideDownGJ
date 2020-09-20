@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public GrabbableItem closest;
     public GrabbableItem equipped;
 
+    public GameObject pauseMenu;
+    public bool isPaused;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -30,69 +32,91 @@ public class PlayerController : MonoBehaviour
         falling = false;
 
         originalScale = new Vector3(characterHolder.transform.localScale.x, characterHolder.transform.localScale.y, characterHolder.transform.localScale.z);
+        pauseMenu.SetActive(false);
+        isPaused = false;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.P) && isPaused == false)
         {
-            falling = true;
-            rb.gravityScale = gameController.GetGravityDirection();
-            gameController.SwitchGravity();
-            spriteRenderer.flipY = gameController.switched;
+            //Pause Game!
+            pauseMenu.SetActive(true);
+            isPaused = true;
+            config.isGamePaused = true;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.P) && isPaused)
+        {
+            ResumeGame();
         }
 
-        var raycastDir = Vector2.down;
-        if (gameController.switched)
+        if (!config.isGamePaused)
         {
-            raycastDir = Vector2.up;
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                falling = true;
+                rb.gravityScale = gameController.GetGravityDirection();
+                gameController.SwitchGravity();
+                spriteRenderer.flipY = gameController.switched;
+            }
+
+            var raycastDir = Vector2.down;
+
+            if (gameController.switched)
+            {
+                raycastDir = Vector2.up;
+            }
+
+            var wasOnGround = config.isGrounded;
+            config.isGrounded = Physics2D.Raycast(transform.position + config.colliderOffset, raycastDir, config.groundLength, config.groundLayer)
+                || Physics2D.Raycast(transform.position - config.colliderOffset, raycastDir, config.groundLength, config.groundLayer)
+                || Physics2D.Raycast(transform.position + config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleLeft) * raycastDir, config.groundAngleLength, config.groundLayer)
+                || Physics2D.Raycast(transform.position - config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleRight) * raycastDir, config.groundAngleLength, config.groundLayer);
+
+            if (!wasOnGround && config.isGrounded)
+            {
+                SoundManager.i.PlaySound("land");
+                StartCoroutine(JumpSqueeze(config.landSqueeze.xSqueeze, config.landSqueeze.ySqueeze, config.landSqueeze.seconds));
+            }
+
+            jumped = Input.GetKeyDown(KeyCode.Space);
+            if (jumped && config.isJumpEnabled)
+            {
+                jumpTimer = Time.time + config.jumpDelay;
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                EquipItem(closest);
+            }
+
+            config.direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
-
-        var wasOnGround = config.isGrounded;
-        config.isGrounded = Physics2D.Raycast(transform.position + config.colliderOffset, raycastDir, config.groundLength, config.groundLayer)
-            || Physics2D.Raycast(transform.position - config.colliderOffset, raycastDir, config.groundLength, config.groundLayer)
-            || Physics2D.Raycast(transform.position + config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleLeft) * raycastDir, config.groundAngleLength, config.groundLayer)
-            || Physics2D.Raycast(transform.position - config.colliderOffset, Util.GetDirectionVector2D(config.coyoteTimeAngleRight) * raycastDir, config.groundAngleLength, config.groundLayer);
-
-        if (!wasOnGround && config.isGrounded)
-        {
-            SoundManager.i.PlaySound("land");
-            StartCoroutine(JumpSqueeze(config.landSqueeze.xSqueeze, config.landSqueeze.ySqueeze, config.landSqueeze.seconds));
-        }
-
-        jumped = Input.GetKeyDown(KeyCode.Space);
-        if (jumped)
-        {
-            jumpTimer = Time.time + config.jumpDelay;
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            EquipItem(closest);
-        }
-
-        config.direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
 
     void FixedUpdate()
     {
-        var horz = config.direction.x * config.moveSpeed * Time.fixedDeltaTime;
-        rb.velocity = new Vector2(horz, rb.velocity.y);
-
-        if (horz != 0)
+        if (!config.isGamePaused)
         {
-            spriteRenderer.flipX = horz < 0;
-        }
+            var horz = config.direction.x * config.moveSpeed * Time.fixedDeltaTime;
+            rb.velocity = new Vector2(horz, rb.velocity.y);
 
-        if (jumped && config.isGrounded && jumpTimer > Time.time)
-        {
-            SoundManager.i.PlaySound("jump");
-            rb.velocity = new Vector2(rb.velocity.x, config.jumpForce * gameController.GetGravityDirection());
-            jumpTimer = 0;
-            StartCoroutine(JumpSqueeze(config.jumpSqueeze.xSqueeze, config.jumpSqueeze.ySqueeze, config.jumpSqueeze.seconds));
-        }
+            if (horz != 0)
+            {
+                spriteRenderer.flipX = horz < 0;
+            }
 
-        ModifyPhysics();
+            if (jumped && config.isGrounded && jumpTimer > Time.time)
+            {
+                SoundManager.i.PlaySound("jump");
+                rb.velocity = new Vector2(rb.velocity.x, config.jumpForce * gameController.GetGravityDirection());
+                jumpTimer = 0;
+                StartCoroutine(JumpSqueeze(config.jumpSqueeze.xSqueeze, config.jumpSqueeze.ySqueeze, config.jumpSqueeze.seconds));
+            }
+
+            ModifyPhysics();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -232,5 +256,12 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(transform.position - config.colliderOffset, transform.position - config.colliderOffset + new Vector3(angleLeft.x, angleLeft.y * raycastDir.y) * config.groundAngleLength);
         Gizmos.DrawLine(transform.position + config.colliderOffset, transform.position + config.colliderOffset + new Vector3(angleRight.x, angleRight.y * raycastDir.y) * config.groundAngleLength);
 
+    }
+
+    public void ResumeGame()
+    {
+        pauseMenu.SetActive(false);
+        isPaused = false;
+        config.isGamePaused = false;
     }
 }

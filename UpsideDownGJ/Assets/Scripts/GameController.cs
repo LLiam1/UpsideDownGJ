@@ -52,4 +52,9 @@ public class GameController : MonoBehaviour
     {
         StartCoroutine(fader.FadeAndLoadScene(SceneFader.FadeDirection.In, nextLevelName));
     }
+
+    public void TitleScreen(string scene)
+    {
+        StartCoroutine(fader.FadeAndLoadScene(SceneFader.FadeDirection.In, scene));
+    }
 }
