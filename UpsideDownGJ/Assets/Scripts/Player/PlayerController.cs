@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
 
         if (!wasOnGround && config.isGrounded)
         {
+            SoundManager.i.PlaySound("land");
             StartCoroutine(JumpSqueeze(config.landSqueeze.xSqueeze, config.landSqueeze.ySqueeze, config.landSqueeze.seconds));
         }
 
@@ -85,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
         if (jumped && config.isGrounded && jumpTimer > Time.time)
         {
+            SoundManager.i.PlaySound("jump");
             rb.velocity = new Vector2(rb.velocity.x, config.jumpForce * gameController.GetGravityDirection());
             jumpTimer = 0;
             StartCoroutine(JumpSqueeze(config.jumpSqueeze.xSqueeze, config.jumpSqueeze.ySqueeze, config.jumpSqueeze.seconds));
