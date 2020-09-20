@@ -25,6 +25,7 @@ public class ActivatorController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        SoundManager.i.PlaySound("activator_button_click");
         config.button.transform.Translate(Vector2.up * -0.15f);
         config.isActivated = true;
         if (gate != null)
@@ -40,6 +41,7 @@ public class ActivatorController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        SoundManager.i.PlaySound("activator_button_release");
         config.button.transform.Translate(Vector2.up * 0.15f);
         config.isActivated = false;
         if (gate != null)

@@ -1804,11 +1804,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameController
       objectReference: {fileID: 0}
-    - target: {fileID: 5653704498909368103, guid: a3d828db74def4cc2b457cb5e0d0ea20,
-        type: 3}
-      propertyPath: nextLevelName
-      value: elevator
-      objectReference: {fileID: 0}
     - target: {fileID: 5653704498909368104, guid: a3d828db74def4cc2b457cb5e0d0ea20,
         type: 3}
       propertyPath: m_LocalPosition.x
