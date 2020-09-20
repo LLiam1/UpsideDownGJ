@@ -57,6 +57,25 @@ public class SoundManager : MonoBehaviour
     void Update()
     {
         musicSource.volume = musicConfig.volume;
+
+        //Mute Music
+        if(PlayerPrefs.GetInt("MuteMusic") == 1)
+        {
+            musicSource.Pause();
+        } else
+        {
+            musicSource.UnPause();
+        }
+
+        //Mute Sounds
+        if (PlayerPrefs.GetInt("MuteSounds") == 1)
+        {
+            source.Pause();
+        }
+        else
+        {
+            source.UnPause();
+        }
     }
 
     public void PlayNextSong()
