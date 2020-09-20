@@ -991,6 +991,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5803441618431097572, guid: 3fb69617430ef4f98bc1c01517aad302,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 7228133123247672496, guid: 3fb69617430ef4f98bc1c01517aad302,
         type: 3}
       propertyPath: m_LocalPosition.x

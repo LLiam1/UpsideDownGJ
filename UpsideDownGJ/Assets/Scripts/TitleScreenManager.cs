@@ -53,7 +53,7 @@ public class TitleScreenManager : MonoBehaviour
     public void ToScene(string sceneName)
     {
         SoundManager.i.PlaySound("button_click");
-        //fadeScreen.SetActive(true);
+        fadeScreen.SetActive(true);
         StartCoroutine(fader.FadeAndLoadScene(SceneFader.FadeDirection.In, sceneName));
     }
 
