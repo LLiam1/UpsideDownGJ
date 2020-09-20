@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour
             pauseMenu.SetActive(true);
             isPaused = true;
             config.isGamePaused = true;
-
         }
         else if (Input.GetKeyDown(KeyCode.P) && isPaused)
         {
@@ -55,6 +54,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
+                SoundManager.i.PlaySound("gravity_switch");
                 falling = true;
                 rb.gravityScale = gameController.GetGravityDirection();
                 gameController.SwitchGravity();
@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
+                SoundManager.i.PlaySound("equip");
                 EquipItem(closest);
             }
 
@@ -123,6 +124,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Hazard"))
         {
+            SoundManager.i.PlaySound("death");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
