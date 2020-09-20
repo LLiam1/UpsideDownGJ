@@ -264,5 +264,22 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 95ca46347b4df4177bda2796708d7a98, type: 3}
     volume: 0.06
     pitch: 1
+  - name: gravity_switch
+    clip: {fileID: 8300000, guid: 27a310388baad48be8b1636b01093f70, type: 3}
+    volume: 0.06
+    pitch: 1
+  - name: equip
+    clip: {fileID: 8300000, guid: 2a04ea2ed776d4f84a29a3c92c7477f2, type: 3}
+    volume: 0.06
+    pitch: 1
+  - name: success
+    clip: {fileID: 8300000, guid: c5e008959260a401c924962938f579a5, type: 3}
+    volume: 0.08
+    pitch: 1
+  - name: death
+    clip: {fileID: 8300000, guid: 9cce85cb50e77441286550f65c614933, type: 3}
+    volume: 0.08
+    pitch: 1
   backgroundMusic:
+  - {fileID: 8300000, guid: d0f2e7cece92a4cc19af134d42c5da8e, type: 3}
   - {fileID: 8300000, guid: b0f92e30c016b4f7c821c0fbe113b6da, type: 3}

@@ -15,6 +15,7 @@ public class LevelGoal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            SoundManager.i.PlaySound("success");
             controller.NextLevel();
         }
     }
